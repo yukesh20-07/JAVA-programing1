@@ -1,0 +1,111 @@
+import java.util.Scanner;
+
+	class Bed {
+	    int bedId;
+	    boolean isOccupied;
+	    String patientName;
+
+	    Bed(int id) {
+	        this.bedId = id;
+	        this.isOccupied = false;
+	        this.patientName = "";
+	    }
+
+	    void allocate(String name) {
+	        this.isOccupied = true;
+	        this.patientName = name;
+	    }
+
+	    void release() {
+	        this.isOccupied = false;
+	        this.patientName = "";
+	    }
+
+	    void display() {
+	        if (isOccupied) {
+	            System.out.println("Bed ID: " + bedId + " | Occupied by: " + patientName);
+	        } else {
+	            System.out.println("Bed ID: " + bedId + " | Available");
+	        }
+	    }
+	}
+
+	public class HospitalSystem {
+	    public static void main(String[] args) {
+	        Scanner sc = new Scanner(System.in);
+
+	        System.out.print("Enter number of beds: ");
+	        int n = sc.nextInt();
+
+	        Bed[] beds = new Bed[n];
+
+	        for (int i = 0; i < n; i++) {
+	            beds[i] = new Bed(i + 1);
+	        }
+
+	        int choice;
+
+	        do {
+	            System.out.println("\n--- Hospital Bed System ---");
+	            System.out.println("1. View Beds");
+	            System.out.println("2. Allocate Bed");
+	            System.out.println("3. Release Bed");
+	            System.out.println("4. Exit");
+	            System.out.print("Enter choice: ");
+	            choice = sc.nextInt();
+
+	            switch (choice) {
+	                case 1:
+	                    for (Bed b : beds) {
+	                        b.display();
+	                    }
+	                    break;
+
+	                case 2:
+	                    System.out.print("Enter bed ID to allocate: ");
+	                    int id = sc.nextInt();
+	                    sc.nextLine(); // consume newline
+
+	                    if (id > 0 && id <= n) {
+	                        if (!beds[id - 1].isOccupied) {
+	                            System.out.print("Enter patient name: ");
+	                            String name = sc.nextLine();
+	                            beds[id - 1].allocate(name);
+	                            System.out.println("Bed allocated successfully.");
+	                        } else {
+	                            System.out.println("Bed already occupied.");
+	                        }
+	                    } else {
+	                        System.out.println("Invalid Bed ID.");
+	                    }
+	                    break;
+
+	                case 3:
+	                    System.out.print("Enter bed ID to release: ");
+	                    int rid = sc.nextInt();
+
+	                    if (rid > 0 && rid <= n) {
+	                        if (beds[rid - 1].isOccupied) {
+	                            beds[rid - 1].release();
+	                            System.out.println("Bed released successfully.");
+	                        } else {
+	                            System.out.println("Bed is already free.");
+	                        }
+	                    } else {
+	                        System.out.println("Invalid Bed ID.");
+	                    }
+	                    break;
+
+	                case 4:
+	                    System.out.println("Exiting...");
+	                    break;
+
+	                default:
+	                    System.out.println("Invalid choice.");
+	            }
+
+	        } while (choice != 4);
+
+	        sc.close();
+	    }
+	}
